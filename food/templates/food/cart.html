@@ -1,0 +1,195 @@
+
+<html>
+
+<head>
+    
+    <title>My Cart | Foodie</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f6f8;
+            padding: 40px;
+        }
+
+        .cart-container {
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+    
+        .cart-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-box h2 {
+            margin-bottom: 25px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .item-info p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quantity-controls a {
+            text-decoration: none;
+            background: #ff4d4d;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .quantity-controls span {
+            font-size: 16px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        
+        .summary-box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            height: fit-content;
+        }
+
+        .summary-box h3 {
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            font-size: 15px;
+        }
+
+        .summary-row.total {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+            background: #ff4d4d;
+            color: white;
+            border-radius: 30px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .btn.secondary {
+            background: #444;
+        }
+
+        .empty {
+            text-align: center;
+            color: #777;
+            font-size: 16px;
+        }
+
+        @media (max-width: 900px) {
+            .cart-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if cart_items %}
+    <div class="cart-container">
+
+       
+        <div class="cart-box">
+            <h2>🛒 My Cart</h2>
+
+            
+            <div class="cart-item">
+                <div class="item-info">
+                    <h4>{{ item.food.name }}</h4>
+                    <p>₹{{ item.food.price }} × {{ item.quantity }}</p>
+                </div>
+
+                <div class="quantity-controls">
+                    <a href="{% url 'decrease_quantity' item.id %}">−</a>
+                    <span>{{ item.quantity }}</span>
+                    <a href="{% url 'increase_quantity' item.id %}">+</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+
+        <div class="summary-box">
+            <h3>Order Summary</h3>
+
+            <div class="summary-row">
+                <span>Total Items</span>
+                <span>{{ cart_items|length }}</span>
+            </div>
+
+            <div class="summary-row total">
+                <span>Total Amount</span>
+                <span>₹{{ total }}</span>
+            </div>
+
+            <a href="{% url 'payment' %}" class="btn">Proceed to Payment</a>
+
+            <a href="{% url 'home' %}" class="btn secondary"> Home</a>
+        </div>
+
+    </div>
+    {% else %}
+    <p class="empty">Your cart is empty 😔</p>
+    <div style="text-align:center;">
+        <a href="{% url 'home' %}" class="btn secondary" style="max-width:200px;margin:auto;">
+            🏠 Go to Home
+        </a>
+    </div>
+    {% endif %}
+
+</body>
+
+</html>
